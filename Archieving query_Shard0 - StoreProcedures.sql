@@ -6,9 +6,9 @@ SELECT interactionid,
            partition BY contactid
            ORDER BY lastmodified DESC) AS RowNum
 INTO   #temp
-FROM   [sc10directaxis_Xdb.Collection.Shard0].[xdb_collection].[interactions]
+FROM   [sc10dev_Xdb.Collection.Shard0].[xdb_collection].[interactions]
 WHERE  contactid IN (SELECT contactid
-                     FROM   [sc10directaxis_Xdb.Collection.Shard0].[xdb_collection].[interactions]
+                     FROM   [sc10ddev_Xdb.Collection.Shard0].[xdb_collection].[interactions]
                      --Where ContactId in ('CC1CC7F5-26CF-0000-0000-06EB227A992C')
                      GROUP  BY contactid
                      HAVING Count(contactid) > 1000)
@@ -59,7 +59,7 @@ WHILE EXISTS (SELECT 1
 
           INSERT INTO [XDB_Interaction_Archived].[dbo].[InteractionFacets_Archive_Shard0]
           SELECT *
-          FROM   [sc10directaxis_Xdb.Collection.Shard0].[xdb_collection].[interactionfacets]
+          FROM   [sc10dev_Xdb.Collection.Shard0].[xdb_collection].[interactionfacets]
           WHERE  interactionid IN (SELECT interactionid
                                    FROM   #temp
                                    WHERE  rownum > @ProcessedCount
@@ -67,7 +67,7 @@ WHILE EXISTS (SELECT 1
                                                           @BatchSize
                                                         ))
 
-          DELETE FROM [sc10directaxis_Xdb.Collection.Shard0].[xdb_collection].[interactionfacets]
+          DELETE FROM [sc10dev_Xdb.Collection.Shard0].[xdb_collection].[interactionfacets]
           WHERE  interactionid IN (SELECT interactionid
                                    FROM   #temp
                                    WHERE  rownum > @ProcessedCount
@@ -77,7 +77,7 @@ WHILE EXISTS (SELECT 1
 
           INSERT INTO [XDB_Interaction_Archived].[dbo].[Interactions_Archive_Shard0]
           SELECT *
-          FROM   [sc10directaxis_Xdb.Collection.Shard0].[xdb_collection].[interactions]
+          FROM   [sc10dev_Xdb.Collection.Shard0].[xdb_collection].[interactions]
           WHERE  interactionid IN (SELECT interactionid
                                    FROM   #temp
                                    WHERE  rownum > @ProcessedCount
@@ -85,7 +85,7 @@ WHILE EXISTS (SELECT 1
                                                           @BatchSize
                                                         ))
 
-          DELETE FROM [sc10directaxis_Xdb.Collection.Shard0].[xdb_collection].[interactions]
+          DELETE FROM [sc10dev_Xdb.Collection.Shard0].[xdb_collection].[interactions]
           WHERE  interactionid IN (SELECT interactionid
                                    FROM   #temp
                                    WHERE  rownum > @ProcessedCount
