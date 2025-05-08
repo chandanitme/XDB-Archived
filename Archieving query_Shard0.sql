@@ -1,4 +1,4 @@
-USE [sc10directaxis_Xdb.Collection.Shard0]
+USE [sc10dev_Xdb.Collection.Shard0]
 
 SELECT interactionid,
        Row_number()
